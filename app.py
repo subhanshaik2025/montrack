@@ -149,13 +149,16 @@ mom_delta_type = "pos" if (mom_change or 0) >= 0 else "neg"
 liq_type = "pos" if liq_ratio >= 3 else ("neu" if liq_ratio >= 1 else "neg")
 sr_type  = "pos" if savings_rate >= 20 else ("neu" if savings_rate >= 10 else "neg")
 
-st.markdown(f"""<div class="kpi-grid">
-    {kpi_card("Net Worth", inr(net_worth), icon="🏦", accent="#14b8a6")}
-    {kpi_card("Investments", inr(invest_value), delta=f"{pct(mom_pct)} MoM" if mom_pct is not None else None, delta_type=mom_delta_type, icon="📈", accent="#6366f1")}
-    {kpi_card("Cash Balance", inr(cash_balance), icon="💵", accent="#f59e0b")}
-    {kpi_card("Liquidity Ratio", f"{liq_ratio:.1f} mo" if liq_ratio != float('inf') else "∞ mo", delta="Healthy ✓" if liq_ratio >= 3 else ("Low ⚠" if liq_ratio < 1 else "OK"), delta_type=liq_type, icon="🛡️", accent="#10b981")}
-    {kpi_card("Savings Rate", f"{savings_rate:.0f}%", delta="On track ✓" if savings_rate >= 20 else "Below target", delta_type=sr_type, icon="🎯", accent="#8b5cf6")}
-</div>""", unsafe_allow_html=True)
+cards_html = (
+    '<div class="kpi-grid">'
+    + kpi_card("Net Worth", inr(net_worth), icon="🏦", accent="#14b8a6")
+    + kpi_card("Investments", inr(invest_value), delta=(pct(mom_pct) + " MoM") if mom_pct is not None else None, delta_type=mom_delta_type, icon="📈", accent="#6366f1")
+    + kpi_card("Cash Balance", inr(cash_balance), icon="💵", accent="#f59e0b")
+    + kpi_card("Liquidity Ratio", (str(round(liq_ratio, 1)) + " mo") if liq_ratio != float("inf") else "∞ mo", delta="Healthy ✓" if liq_ratio >= 3 else ("Low ⚠" if liq_ratio < 1 else "OK"), delta_type=liq_type, icon="🛡️", accent="#10b981")
+    + kpi_card("Savings Rate", str(round(savings_rate)) + "%", delta="On track ✓" if savings_rate >= 20 else "Below target", delta_type=sr_type, icon="🎯", accent="#8b5cf6")
+    + "</div>"
+)
+st.markdown(cards_html, unsafe_allow_html=True)
 
 st.markdown('<div class="section-header">Net Worth — Trailing 6 Months</div>', unsafe_allow_html=True)
 
