@@ -25,6 +25,10 @@ def inr(x: float) -> str:
 
 
 init_db()
+from db.seed import seed
+seed()
+from db.seed import seed
+seed()
 session = get_session()
 
 st.title("💎 MonTrack")
