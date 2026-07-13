@@ -1,0 +1,4 @@
+.venv/
+wealth.db
+__pycache__/
+*.pyc
